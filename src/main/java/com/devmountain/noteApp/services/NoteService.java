@@ -1,7 +1,7 @@
 package com.devmountain.noteApp.services;
 
 import com.devmountain.noteApp.dtos.NoteDto;
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +17,8 @@ public interface NoteService {
     @Transactional
     void updateNoteById(NoteDto noteDto);
 
-    //public List<NoteDto> getAllNotesByUserId (Long userId){
-    //        Optional<User> userOptional = userRepository.findById(userId);
-    //        if(userOptional.isPresent()){
-    //            List<Note> noteList = noteRepository.findAll(userId);
-    //            return noteList.stream().map(note -> new NoteDto(note)).collect(Collectors.toList());
-    //        }
-    //        return Collections.emptyList();
-    //}
-    List<NoteDto> getAllNotesByUserId (Long userId);
     Optional<NoteDto> getNoteById(Long noteId);
+
+
+    List<NoteDto> getAllNotesByUserId(Long userId);
 }

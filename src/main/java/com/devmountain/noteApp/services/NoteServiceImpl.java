@@ -7,7 +7,7 @@ import com.devmountain.noteApp.repositories.NoteRepository;
 import com.devmountain.noteApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,15 +48,32 @@ public class NoteServiceImpl implements NoteService {
             noteRepository.saveAndFlush(note);
         });
     }
-@Override
-public List<NoteDto> getAllNotesByUserId (Long userId){
+
+    @Override
+    @Transactional
+    public List<NoteDto> getAllNotesByUserId (Long userId){
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
-            List<Note> noteList = noteRepository.findAll();
+            List<Note> noteList = noteRepository.findAllByUserEquals(userOptional.get());
             return noteList.stream().map(note -> new NoteDto(note)).collect(Collectors.toList());
         }
         return Collections.emptyList();
 }
+
+
+//    @Override
+//    public List<NoteDto> getAllNotesByUserId (Long userId){
+//        Optional<User> userOptional = userRepository.findById(userId);
+//
+//        if(userOptional.isPresent()){
+////            System.out.println("User optional: " + userOptional.get());
+//            List<Note> noteList = noteRepository.findAllByUserEquals(userOptional.get());
+//            return noteList.stream().map(note -> new NoteDto(note)).collect(Collectors.toList());
+////            return Collections.emptyList();
+//        }
+//        return Collections.emptyList();
+//    }
+
     @Override
     public Optional<NoteDto> getNoteById(Long noteId) {
         Optional<Note> noteOptional = noteRepository.findById(noteId);

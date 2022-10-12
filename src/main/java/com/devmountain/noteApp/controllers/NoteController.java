@@ -6,6 +6,7 @@ import com.devmountain.noteApp.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,8 +21,8 @@ public class NoteController {
     }
 
     @GetMapping("/user/{userId}")
-    public void getAllNotesByUserId(@PathVariable Long userId){
-        noteService.getAllNotesByUserId(userId);
+    public List<NoteDto> getAllNotesByUserId(@PathVariable Long userId){
+        return noteService.getAllNotesByUserId(userId);
     }
     @PostMapping("/user/{userId}")
     public void addNote(@RequestBody NoteDto noteDto, @PathVariable Long userId){

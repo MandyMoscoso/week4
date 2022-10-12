@@ -41,8 +41,6 @@ public class UserServiceImpl implements UserService {
     public List<String> userLogin(UserDto userDto){
         List<String> response = new ArrayList<>();
         Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
-        System.out.println(userOptional + "--this is userOptional");
-        System.out.println(userDto + "--- this is userDto");
         if(userOptional.isPresent()){
             if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())){
                 response.add("home.html");

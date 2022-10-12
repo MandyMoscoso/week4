@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
 }
 
 async function addNote(obj) {
-    console.log("note sent")
+//    console.log("note sent")
     const response = await fetch(`${baseUrl}user/${userId}`, {
         method: "POST",
         body: JSON.stringify(obj),
@@ -52,8 +52,7 @@ async function getNotes(userId) {
         method: "GET",
         headers: headers
     })
-//        .then(response => response.json())
-        .then(response => console.log(response))
+        .then(response => response.json())
         .then(data => createNoteCards(data))
         .catch(err => console.error(err))
 }
