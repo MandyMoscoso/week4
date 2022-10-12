@@ -19,6 +19,10 @@ public class NoteController {
         return noteService.getNoteById(noteId);
     }
 
+    @GetMapping("/user/{userId}")
+    public void getAllNotesByUserId(@PathVariable Long userId){
+        noteService.getAllNotesByUserId(userId);
+    }
     @PostMapping("/user/{userId}")
     public void addNote(@RequestBody NoteDto noteDto, @PathVariable Long userId){
         noteService.addNote(noteDto, userId);

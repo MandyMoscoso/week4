@@ -3,6 +3,7 @@ package com.devmountain.noteApp.services;
 import com.devmountain.noteApp.dtos.NoteDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NoteService {
@@ -24,5 +25,6 @@ public interface NoteService {
     //        }
     //        return Collections.emptyList();
     //}
+    List<NoteDto> getAllNotesByUserId (Long userId);
     Optional<NoteDto> getNoteById(Long noteId);
 }
