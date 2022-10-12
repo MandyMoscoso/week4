@@ -1,12 +1,13 @@
-package services;
+package com.devmountain.noteApp.services;
+
 import com.devmountain.noteApp.dtos.UserDto;
 import com.devmountain.noteApp.entities.User;
 import com.devmountain.noteApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     //any time you are saving something to the database you should include the @Transactional annotation which ensures that the transaction that gets opened with your datasource gets resolved
     //this method is to add user
+
     @Override
     @Transactional
     public List<String> addUser(UserDto userDto) {
@@ -29,9 +31,10 @@ public class UserServiceImpl implements UserService {
         User user = new User(userDto);
         //this step is where a user is actually people persisted***
         userRepository.saveAndFlush(user);
-        response.add("User added successfully");
+        response.add("login.html");
         return response;
     }
+
 
 
     @Override
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByUsername(userDto.getUsername());
         if(userOptional.isPresent()){
             if(passwordEncoder.matches(userDto.getPassword(), userOptional.get().getPassword())){
-                response.add("user login successful");
+                response.add("home.html");
                 response.add(String.valueOf(userOptional.get().getId()));
             } else {
                 response.add("Username or password incorrect");

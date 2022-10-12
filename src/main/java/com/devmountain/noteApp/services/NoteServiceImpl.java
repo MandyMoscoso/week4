@@ -1,10 +1,11 @@
-package services;
+package com.devmountain.noteApp.services;
 
 import com.devmountain.noteApp.dtos.NoteDto;
 import com.devmountain.noteApp.entities.Note;
 import com.devmountain.noteApp.entities.User;
 import com.devmountain.noteApp.repositories.NoteRepository;
 import com.devmountain.noteApp.repositories.UserRepository;
+import com.devmountain.noteApp.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class NoteServiceImpl {
+public class NoteServiceImpl implements NoteService {
 
     @Autowired
     private UserRepository userRepository;
@@ -20,6 +21,7 @@ public class NoteServiceImpl {
     private NoteRepository noteRepository;
 
     //For adding a note
+    @Override
     @Transactional
     public void addNote(NoteDto noteDto, Long userId){
         Optional<User> userOptional = userRepository.findById(userId);
@@ -28,12 +30,14 @@ public class NoteServiceImpl {
         noteRepository.saveAndFlush(note);
     }
 
+    @Override
     @Transactional
     public void deleteNoteById(Long noteId){
         Optional<Note> noteOptional = noteRepository.findById(noteId);
         noteOptional.ifPresent(note -> noteRepository.delete(note));
     }
 
+    @Override
     @Transactional
     public void updateNoteById(NoteDto noteDto){
         Optional<Note> noteOptional= noteRepository.findById(noteDto.getId());
@@ -43,6 +47,21 @@ public class NoteServiceImpl {
         });
     }
 
-
+//public List<NoteDto> getAllNotesByUserId (Long userId){
+//        Optional<User> userOptional = userRepository.findById(userId);
+//        if(userOptional.isPresent()){
+//            List<Note> noteList = noteRepository.findAll(userId);
+//            return noteList.stream().map(note -> new NoteDto(note)).collect(Collectors.toList());
+//        }
+//        return Collections.emptyList();
+//}
+    @Override
+    public Optional<NoteDto> getNoteById(Long noteId) {
+        Optional<Note> noteOptional = noteRepository.findById(noteId);
+        if (noteOptional.isPresent()){
+            return Optional.of(new NoteDto(noteOptional.get()));
+        }
+        return Optional.empty();
+    }
 
 }
